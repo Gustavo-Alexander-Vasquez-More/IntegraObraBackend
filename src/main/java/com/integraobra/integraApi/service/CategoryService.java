@@ -36,7 +36,7 @@ public class CategoryService {
     public void deleteCategory(Long id){
         //Verificamos si la categoría existe
         if(!categoryRepository.existsById(id)){
-            throw new RuntimeException("La categoría con ID '" + id + "' no existe.");
+            throw new CategoryExistException("La categoría con ID '" + id + "' no existe.");
         }
         //Si existe, eliminamos los categoryDetails asociados en cascada y luego la categoría
         categoryDetailRepository.deleteByCategoryId(id);
@@ -68,7 +68,7 @@ public class CategoryService {
     //Servicio para obtener una categoría por su ID
     public Category getCategoryById(Long id) {
         return categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("La categoría con ID '" + id + "' no existe."));
+                .orElseThrow(() -> new CategoryExistException("La categoría con ID '" + id + "' no existe."));
     }
 
 }

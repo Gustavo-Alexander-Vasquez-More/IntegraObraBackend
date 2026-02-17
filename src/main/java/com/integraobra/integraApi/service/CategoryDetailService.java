@@ -1,6 +1,7 @@
 package com.integraobra.integraApi.service;
 
 import com.integraobra.integraApi.DTO.categoryDetails.CategoryDetailRequestDTO;
+import com.integraobra.integraApi.Exceptions.CategoryDetailExistException;
 import com.integraobra.integraApi.model.Category;
 import com.integraobra.integraApi.model.CategoryDetail;
 import com.integraobra.integraApi.model.Product;
@@ -24,7 +25,7 @@ public class CategoryDetailService {
     public void createCategoryDetail(CategoryDetailRequestDTO categoryDetailRequestDTO) {
         //Revisar si el detalle de categoría ya existe para el id de categoría y producto
         if (categoryDetailRepository.existsByCategoryIdAndProductId(categoryDetailRequestDTO.getCategoryId(), categoryDetailRequestDTO.getProductId())) {
-            throw new RuntimeException("El detalle de categoría para la categoría con ID '" + categoryDetailRequestDTO.getCategoryId() + "' y el producto con ID '" + categoryDetailRequestDTO.getProductId() + "' ya existe.");
+            throw new CategoryDetailExistException("El detalle de categoría para la categoría con ID '" + categoryDetailRequestDTO.getCategoryId() + "' y el producto con ID '" + categoryDetailRequestDTO.getProductId() + "' ya existe.");
         }
         //Si no existe, lo creamos
         //Obtenemos el producto y la categoria por id
@@ -38,7 +39,7 @@ public class CategoryDetailService {
     public void deleteCategoryDetail(Long id) {
         //Verificamos si el detalle de categoría existe
         if (!categoryDetailRepository.existsById(id)) {
-            throw new RuntimeException("El detalle de categoría con ID '" + id + "' no existe.");
+            throw new CategoryDetailExistException("El detalle de categoría con ID '" + id + "' no existe.");
         }
         //Si existe, lo eliminamos
         categoryDetailRepository.deleteById(id);
