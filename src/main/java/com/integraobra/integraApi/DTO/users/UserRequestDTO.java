@@ -14,8 +14,8 @@ public class UserRequestDTO {
     private String username;
     @NotEmpty(message = "La contraseña no puede estar vacía." )
     private String password;
-    @Pattern(regexp = "SUPERADMIN|MODERATOR|EMPLOYEE",
-            message = "Los roles permitidos son SUPERADMIN MODERATOR o EMPLOYEE.")
+    @Pattern(regexp = "ADMIN|EMPLOYEE",
+            message = "Los roles permitidos son ADMIN o EMPLOYEE.")
     @NotEmpty(message = "El rol de usuario no puede estar vacío." )
     private String role;
 }

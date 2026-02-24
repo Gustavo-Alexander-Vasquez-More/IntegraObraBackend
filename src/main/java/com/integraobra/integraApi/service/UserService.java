@@ -75,7 +75,7 @@ public class UserService {
         User user = new User(
                 firstUserRequestDTO.getUsername(),
                 hashedPassword
-        , RoleUser.SUPERADMIN);
+        , RoleUser.ADMIN);
         userRepository.save(user);
         //Devolvemos el DTO de respuesta sin la contraseña
         return "Primer admin: '"+user.getUsername()+" ha sido creado exitosamente";

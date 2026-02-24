@@ -28,7 +28,7 @@ public class UserController {
 
     //Crear un nuevo usuario (solo SUPERADMIN)
     @PostMapping
-    @PreAuthorize("hasRole('SUPERADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserMessageDTO> createUser(@RequestBody @Valid UserRequestDTO userRequestDTO) {
         String response = userService.createUser(userRequestDTO);
         return ResponseEntity.ok(new UserMessageDTO(200, response, java.time.LocalDateTime.now()));
@@ -36,23 +36,23 @@ public class UserController {
 
     //Eliminar un usuario por su id (solo SUPERADMIN)
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('SUPERADMIN')")
-    public ResponseEntity<UserMessageDTO> deleteUser(@PathVariable Long id) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserMessageDTO> deleteUser(@PathVariable("id") Long id) {
         return ResponseEntity.ok(new UserMessageDTO(200, userService.deleteUserById(id), java.time.LocalDateTime.now()));
     }
 
     //Buscar usuarios paginados por un termino de busqueda en el username solo SUPERADMIN
     @GetMapping("/search")
-    @PreAuthorize("hasRole('SUPERADMIN')")
-    public ResponseEntity<Page<UserDetailDTO>> search(@RequestParam(required = false) String username, @PageableDefault(size = 10, sort = "username") Pageable pageable) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<UserDetailDTO>> search(@RequestParam(name = "username", required = false) String username, @PageableDefault(size = 10, sort = "username") Pageable pageable) {
 
         return ResponseEntity.ok(userService.searchUsersPaged(username, pageable));
     }
 
     //Actualizar un usuario por su id (solo SUPERADMIN)
     @PatchMapping("/{id}")
-    @PreAuthorize("hasRole('SUPERADMIN')")
-    public ResponseEntity<UserMessageDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest userUpdateRequest) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserMessageDTO> updateUser(@PathVariable("id") Long id, @Valid @RequestBody UserUpdateRequest userUpdateRequest) {
         String response = userService.updateUserPatch(id, userUpdateRequest);
         return ResponseEntity.ok(new UserMessageDTO(200, response, java.time.LocalDateTime.now()));
     }
@@ -65,7 +65,7 @@ public class UserController {
     }
 
     @GetMapping("/me/{token}")
-    public ResponseEntity<UserDetailDTO> getMyUserDetails(@PathVariable String token) {
+    public ResponseEntity<UserDetailDTO> getMyUserDetails(@PathVariable("token") String token) {
         UserDetailDTO userDetailDTO = userService.getMe(token);
         return ResponseEntity.ok(userDetailDTO);
     }
